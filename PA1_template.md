@@ -12,7 +12,7 @@ library(ggplot2)
 ```
 ## Warning: package 'ggplot2' was built under R version 3.1.3
 ```
-Look at the first few items, note that they are NA
+Look at the first few items, note that the steps column has some NA
 
 ```r
 head(activity_data)
@@ -28,7 +28,7 @@ head(activity_data)
 ## 6    NA 2012-10-01       25
 ```
 Loading: Step 2. Transform the data into a suitable format. 
-Let's get only the complete rows there are (no NAs). We'll use only the complete rows to do the first few analyses. 
+Let's get only the complete rows there are no NAs. We'll use only the complete rows to do the first few analyses. 
 
 ```r
 complete_ad <-activity_data[complete.cases(activity_data),]
@@ -110,7 +110,7 @@ There are a number of ways to do this. Order "averagePer5MinInterval" from great
 
 ```r
 indexOfMax <- order(averagePer5MinInterval, decreasing=TRUE)[1]
-maxValue <- averagePer5MinInterval[indexOfMax]
+maxValue <- format(round(averagePer5MinInterval[indexOfMax],2))
 intervalForMax <- unique(complete_ad$interval)[indexOfMax]
 annotMax <-paste( "Maximum = ",maxValue, " at interval ", format(round(intervalForMax,2)))
 gline <- gg + geom_vline(xintercept = intervalForMax,col="green") 
@@ -156,7 +156,7 @@ The mean total steps in this case is 10766.19 compared to the previous value of 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-To determine if there are difference in activity patterns between weekdays and weekends, we'll add a factor column called "Weekday" with values "weekday" and "weekend" to the complete cases dataset (complete_ad). Then we'll use that column as a facet to plot the weekday and weekend. Start by making the date column an actual date class, and then add the new factor variable. We'll use a little trick related to the integer values of FALSE evaluates to 0 and TRUE evaluates to 1. A boolean test of wether a day is a weekday will evaluate to FALSE if it is not and TRUE if it is. If 1 is added to these results, you will get 1 for a weekend and 2 for a weekday. The properly structured factor variable with these levels can then be used to fill in the column.
+To determine if there are differences in activity patterns between weekdays and weekends, we'll add a factor column called "wday" with levels "weekday" and "weekend" to the complete cases dataset (complete_ad). Then we'll use that column as a facet to plot the aerage daily values for weekends and weekdays.Start by making the date column an actual date class, and then add the new factor variable. We'll use a little trick related to the fact that the integer value of FALSE evaluates to 0 and TRUE evaluates to 1. A boolean test of whether a day is a weekday will evaluate to FALSE if it is not and TRUE if it is. If 1 is added to these results, you will get 1 for a weekend and 2 for a weekday. The properly structured factor variable with these levels can then be used to fill in the column.
 
 
 ```r
@@ -181,7 +181,7 @@ splitWeekdayInterval = split(weekdayData$steps,weekdayData$interval)
 sumByweekdayInterval <- sapply(splitWeekdayInterval, sum)
 averagePer5MinIntervalWD <- sumByweekdayInterval/nDaysweekday
 ```
-Assemble the data into a dataframe. First, add the correct factor variable, then rbind the two data sets together so we can use the factor as the facet in the plot. 
+Finally, assemble the data into a dataframe. First, add the correct factor variable, then rbind the two data sets together so we can use the factor as the facet in the plot. 
 
 ```r
 dfweekend<- data.frame(interval = unique(weekendData$interval),steps=averagePer5MinIntervalWE)
