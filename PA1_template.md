@@ -201,4 +201,4 @@ g3 <- g2 + labs(title="Avg Num Steps in 5 min intervals (ingore NAs): weekends &
 
 ![](PA1_template_files/figure-html/unnamed-chunk-15-1.png) 
 
-From the graph we can conclude that there is overall more consistent activity on the weekends. However, itlooks like there is also some consistent high activity in the 500 to roughly 900 interval every day.
+From the graph we can conclude that there is overall more consistent activity on the weekends. However, itlooks like there is also some consistent high activity in the 500 to roughly 900 interval every weekday.
